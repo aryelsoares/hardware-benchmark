@@ -1,0 +1,48 @@
+# Docker-compose
+
+services:
+  # InfluxDB
+  influxdb:
+    image: influxdb:latest
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin_password
+      - DOCKER_INFLUXDB_INIT_ORG=home_org
+      - DOCKER_INFLUXDB_INIT_BUCKET=home
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=hardware_info
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+  
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - influxdb
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+      - ./dashboards:/var/lib/grafana/dashboards
+  
+  # Compiler
+  app:
+    build: .
+    depends_on:
+      - influxdb
+    privileged: true
+    volumes:
+      - /proc/stat:/proc/stat:ro
+      - /sys/class/powercap:/sys/class/powercap:ro
+      - /sys/class/drm/card1:/sys/class/drm/card1:ro
+      - /proc/meminfo:/proc/meminfo:ro
+      - /sys/class/thermal:/sys/class/thermal:ro
+      - /dev:/dev:ro
+
+volumes:
+  influxdb_data:
