@@ -4,9 +4,12 @@
 #include <iostream>
 #include <fstream>
 
+std::string gpu_use_info {"/sys/class/drm/card1/device/gpu_busy_percent"}; // GPU use
+std::string gpu_power_info {"/sys/class/drm/card1/device/hwmon/hwmon4/power1_average"}; // GPU power
+
 void get_gpu_info(double& use, int& pow) {
-    std::ifstream gpu_busy_file("/sys/class/drm/card1/device/gpu_busy_percent");
-    std::ifstream gpu_power_file("/sys/class/drm/card1/device/hwmon/hwmon5/power1_average");
+    std::ifstream gpu_busy_file(gpu_use_info);
+    std::ifstream gpu_power_file(gpu_power_info);
 
     if (gpu_busy_file.is_open()) {
         gpu_busy_file >> use;

@@ -7,12 +7,15 @@
 #include <thread>
 #include <chrono>
 
+std::string cpu_use_info {"/proc/stat"}; // CPU use
+std::string cpu_power_info {"/sys/class/powercap/intel-rapl:0/energy_uj"}; // CPU power
+
 struct CpuUsage {
     long user, nice, system, idle, iowait, irq, softirq, steal;
 };
 
 CpuUsage cpu_use() {
-    std::ifstream proc_stat("/proc/stat");
+    std::ifstream proc_stat(cpu_use_info);
     std::string cpu;
     CpuUsage usage;
 
@@ -36,7 +39,7 @@ double calculate_cpu_use(CpuUsage start, CpuUsage end) {
 }
 
 double cpu_pow() {
-    std::ifstream cpu_power_file("/sys/class/powercap/intel-rapl:0/energy_uj");
+    std::ifstream cpu_power_file(cpu_power_info);
     long long pow{};
 
     if (cpu_power_file.is_open()) {

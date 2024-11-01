@@ -1,6 +1,6 @@
 # Information
 
-This project aims to create an observability system for real-time monitoring of hardware resources using C++ for data collection, InfluxDB for storage and Grafana for data visualization. The process is done automatically using docker containers. It collects eight data types per second as showed below.
+This project aims to create an observability system for real-time monitoring of hardware resources using C++ for data collection, InfluxDB for storage and Grafana for data visualization. The process is done automatically using docker containers. It collects nine data variants per second as showed below.
 
 - **CPU**
   - Usage
@@ -40,21 +40,13 @@ The software tool **lm-sensors** is required in order to extract temperature dat
 - **k10temp-pci-00c3**
   - Adapter: PCI adapter
     - Tctl:         +26.2°C
-- **nvme-pci-0a00**
-  - Adapter: PCI adapter
-    - Composite:    +40.9°C
-    - Sensor 1:     +40.9°C
-    - Sensor 2:     +26.9°C
 - **amdgpu-pci-0300**
   - Adapter: PCI adapter
     - edge:         +35.0°C
     - junction:     +35.0°C
     - mem:          +46.0°C
-- **nvme-pci-0700**
-  - Adapter: PCI adapter
-    - Composite:    +39.9°C
 
-Temperature data is obtained as subfeature and the processing order is relevant for analysis, including quantity. By default, both nvme-pci sensors will be ignored.
+Temperature data is obtained as subfeature and checked by chip prefixes, so in this case it's **k10temp** and **amdgpu**, respectively. Each file in the headers folder has paths for data extraction.
 
 # Instructions
 

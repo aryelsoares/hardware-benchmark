@@ -7,8 +7,10 @@
 #include <sstream>
 #include <cstdlib>
 
+std::string meminfo {"/proc/meminfo"}; // Memory usage
+
 void get_memory_info(double& memory) {
-    std::ifstream meminfoFile("/proc/meminfo");
+    std::ifstream meminfoFile(meminfo);
     if (!meminfoFile.is_open()) {
         std::cerr << "Failed to open /proc/meminfo" << std::endl;
         std::exit(EXIT_FAILURE);

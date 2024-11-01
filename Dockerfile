@@ -11,14 +11,18 @@ RUN apt-get update && \
 # Working Folder
 WORKDIR /usr/src/hardware-info/
 
+# Create headers directory
+RUN mkdir -p headers
+
 # Get main files
-COPY cpu_info.hpp gpu_info.hpp main.cpp mem_info.hpp temp_info.hpp ./
+COPY main.cpp ./
+COPY headers/ ./headers/
 
 # Get influxdb.hpp library
-RUN curl -o /usr/src/hardware-info/influxdb.hpp https://raw.githubusercontent.com/TheYonkk/influxdb-cpp-2/master/influxdb.hpp
+RUN curl -o ./headers/influxdb.hpp https://raw.githubusercontent.com/TheYonkk/influxdb-cpp-2/master/influxdb.hpp
 
 # Compile
-RUN g++ -o benchmark main.cpp -lsensors
+RUN g++ -o benchmark main.cpp -I./headers -lsensors
 
 # Execute
 CMD ["/usr/local/bin/wait-for-it.sh", "influxdb:8086", "--", "./benchmark"]
