@@ -1,6 +1,10 @@
-# Information
+# ℹ️ Information
 
-This project aims to create an observability system for real-time monitoring of hardware resources using C++ for data collection, InfluxDB for storage and Grafana for data visualization. The process is done automatically using docker containers. It collects nine data variants per second as showed below.
+This project aims to create an observability system for real-time monitoring of hardware resources using C++ for data collection, InfluxDB for storage and Grafana for data visualization. The process is done automatically using docker containers.
+
+## ✨ Features
+
+It collects nine data variants per second as showed below.
 
 - **CPU**
   - Usage
@@ -19,7 +23,7 @@ The data can se analysed through **Hardware Info** dashboard.
 
 ![benchmark](https://github.com/user-attachments/assets/b87a0a71-5c33-41d5-acc4-c05039f89ff5)
 
-# Requirements
+## ⚙️ Requirements
 
 - **Package:**
   - git
@@ -48,26 +52,24 @@ The software tool **lm-sensors** is required in order to extract temperature dat
 
 Temperature data is obtained as subfeature and checked by chip prefixes, so in this case it's **k10temp** and **amdgpu**, respectively. Each file in the headers folder has paths for data extraction.
 
-# Instructions
+## 🚀 Instructions
 
-_**NOTE**_: If directories for data extraction or the temperature list are wrong, the service ends with an error.
+**NOTE**: If directories for data extraction or the temperature list are wrong, the service ends with an error.
 
 To extract data and monitor it in real time, simply run the containers using docker compose. First clone this repository with the following command:
 
 ```bash
-git clone https://github.com/aryelsoares/Hardware-Benchmark.git
+git clone https://github.com/aryelsoares/hardware-benchmark.git
+cd hardware-benchmark
 ```
 
-Change current directory to the same where it was cloned. After that run the following 
-command to start it:
+Change current directory to the same where it was cloned. After that run the following command to start it:
 
 ```bash
 docker-compose up --build
 ```
 
-After that data extraction is made automatically. You can check the dashboard with Grafana 
-browsing ```127.0.0.1:3000```. Both user and 
-password are **admin**.
+After that data extraction is made automatically. You can check the dashboard with Grafana browsing ```127.0.0.1:3000```. Both user and password are **admin**.
 
 Remember to finish access later on with:
 
@@ -75,6 +77,6 @@ Remember to finish access later on with:
 docker-compose down
 ```
 
-# Notes
+## 📝 Notes
 
 Although this project is applicable for a specific computer, its use can be adjusted for other computers by making appropriate changes to the files. Its main use is to monitor hardware usage in real-time.
