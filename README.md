@@ -1,6 +1,6 @@
 # ℹ️ Information
 
-This project aims to create an observability system for real-time monitoring of hardware resources using C++ for data collection, InfluxDB for storage and Grafana for data visualization. The process is done automatically using docker containers.
+This project aims to create an observability system for real-time monitoring of hardware resources using **Rust** for data collection, **InfluxDB** for storage and **Grafana** for data visualization. The process is done automatically using docker containers.
 
 ## ✨ Features
 
@@ -27,7 +27,6 @@ The data can se analysed through **Hardware Info** dashboard.
 
 - **Package:**
   - git
-  - lm-sensors
   - docker
   - docker-compose
 
@@ -39,22 +38,7 @@ The functionality is made exclusively for personal use, taking into account the 
   - GPU: RX 6750XT
   - RAM: 2x16GB
 
-The software tool **lm-sensors** is required in order to extract temperature data. It's important to have previously used sensor detection so *temp_info.hpp* can properly get data. By default, the command is ```sensors-detect``` where all analysis suggestions should be denied. After that just use ```sensors``` to get something like below.
-
-- **k10temp-pci-00c3**
-  - Adapter: PCI adapter
-    - Tctl:         +26.2°C
-- **amdgpu-pci-0300**
-  - Adapter: PCI adapter
-    - edge:         +35.0°C
-    - junction:     +35.0°C
-    - mem:          +46.0°C
-
-Temperature data is obtained as subfeature and checked by chip prefixes, so in this case it's **k10temp** and **amdgpu**, respectively. Each file in the headers folder has paths for data extraction.
-
 ## 🚀 Instructions
-
-**NOTE**: If directories for data extraction or the temperature list are wrong, the service ends with an error.
 
 To extract data and monitor it in real time, simply run the containers using docker compose. First clone this repository with the following command:
 
@@ -74,9 +58,10 @@ After that data extraction is made automatically. You can check the dashboard wi
 Remember to finish access later on with:
 
 ```bash
-docker-compose down
+docker-compose down -v
 ```
 
 ## 📝 Notes
 
-Although this project is applicable for a specific computer, its use can be adjusted for other computers by making appropriate changes to the files. Its main use is to monitor hardware usage in real-time.
+- Although applicable for a specific computer, its use can be adjusted for other computers by making appropriate changes to the files. Its main use is to monitor hardware usage in real-time.
+- This project was made in **C++** and then refactored in **Rust**.

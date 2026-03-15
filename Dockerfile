@@ -1,28 +1,27 @@
-# GCC Compiler
-FROM gcc:latest
+# ----- build stage -----
+FROM rust:1.93.1 AS builder
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y libsensors4-dev && \
-    apt-get install -y curl && \
-    curl -o /usr/local/bin/wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh && \
-    chmod +x /usr/local/bin/wait-for-it.sh
+WORKDIR /app
 
-# Working Folder
-WORKDIR /usr/src/hardware-info/
+# Cache dependencies
+COPY Cargo.toml Cargo.lock ./
+RUN mkdir src && echo "fn main() {}" > src/main.rs
+RUN cargo build --release
+RUN rm -rf src
 
-# Create headers directory
-RUN mkdir -p headers
+# Real code
+COPY . .
+RUN cargo build --release
 
-# Get main files
-COPY main.cpp ./
-COPY headers/ ./headers/
+# ----- runtime stage -----
+FROM debian:bookworm-slim
 
-# Get influxdb.hpp library
-RUN curl -o ./headers/influxdb.hpp https://raw.githubusercontent.com/TheYonkk/influxdb-cpp-2/master/influxdb.hpp
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
 
-# Compile
-RUN g++ -o benchmark main.cpp -I./headers -lsensors
+WORKDIR /app
 
-# Execute
-CMD ["/usr/local/bin/wait-for-it.sh", "influxdb:8086", "--", "./benchmark"]
+COPY --from=builder /app/target/release/hardware-benchmark-app /usr/local/bin/app
+
+CMD ["app"]
